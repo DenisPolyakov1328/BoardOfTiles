@@ -54,7 +54,7 @@ const gameSlice = createSlice({
         const firstTile = state.tiles[firstTileIndex]
         const secondTile = state.tiles[secondTileIndex]
 
-        if (firstTile.color === secondTile.color) {
+        if (firstTile.image === secondTile.image) {
           // Если плитки совпали, они должны исчезнуть
           state.tiles[firstTileIndex].removed = true
           state.tiles[secondTileIndex].removed = true

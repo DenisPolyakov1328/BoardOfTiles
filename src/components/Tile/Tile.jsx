@@ -17,14 +17,14 @@ const Tile = ({ tile, index }) => {
   return (
     <div
       className={`tile w-[100px] h-[100px] m-2 text-4xl flex justify-center items-center rounded cursor-pointer 
-      ${tile.flipped ? 'bg-' + tile.color : 'bg-gray-300 shadow-lg'}
+      ${tile.flipped ? 'bg-' + tile.image : 'bg-gray-300 shadow-lg'}
       ${tile.removed ? 'invisible' : ''}`} // Если плитка удалена, добавляем класс invisible
       onClick={handleClick}
     >
       {!tile.removed &&
         (tile.flipped ? (
           <img
-            src={tile.color}
+            src={tile.image}
             alt="tile"
             className="w-full h-full object-contain"
           />

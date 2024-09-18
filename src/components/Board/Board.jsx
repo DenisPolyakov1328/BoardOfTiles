@@ -6,7 +6,8 @@ import {
   resetGame
 } from './../../features/gameSlice'
 import { generateTiles as generateRandomTiles } from './../../utils/generateTiles'
-import Tile from './../Tile/Tile'
+import GameOverScreen from './GameOverScreen/GameOverScreen'
+import TileGrid from './TileGrid/TileGrid'
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -41,26 +42,9 @@ const Board = () => {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       {gameOver ? (
-        <div className="flex flex-col justify-center items-center gap-[20px]">
-          <h1 className="text-7xl text-fuchsia-800 font-medium">YOU WIN</h1>
-          <button
-            className="mt-4 px-5 py-3 bg-fuchsia-600 hover:bg-fuchsia-800 text-white rounded-lg shadow-lg"
-            onClick={handleReset}
-          >
-            RESTART
-          </button>
-        </div>
+        <GameOverScreen onReset={handleReset} />
       ) : (
-        <div className="flex flex-col justify-center items-center gap-[20px]">
-          <h1 className="text-7xl text-fuchsia-800 font-medium">
-            Board of Tiles
-          </h1>
-          <div className="grid grid-cols-4 gap-2">
-            {tiles.map((tile, index) => (
-              <Tile key={tile.id} tile={tile} index={index} />
-            ))}
-          </div>
-        </div>
+        <TileGrid tiles={tiles} />
       )}
     </div>
   )

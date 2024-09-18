@@ -11,20 +11,20 @@ export const generateTiles = (size = 4) => {
   // Количество плиток (должно быть четным)
   const totalTiles = size * size
 
-  // Список возможных цветов для плиток
-  const colors = [bull, dog, goat, horse, monkey, rabbit, rat, rooster]
+  // Массив возможных изображений для плиток
+  const images = [bull, dog, goat, horse, monkey, rabbit, rat, rooster]
 
-  // Дублируем каждый цвет, чтобы получить пары
-  let tileColors = colors.slice(0, totalTiles / 2)
-  tileColors = [...tileColors, ...tileColors] // Двойной массив для пар
+  // Дублируем каждое изображение, чтобы получить пары
+  let tileImages = images.slice(0, totalTiles / 2)
+  tileImages = [...tileImages, ...tileImages] // Двойной массив для пар
 
-  // Перемешиваем массив цветов случайным образом
-  tileColors = shuffleArray(tileColors)
+  // Перемешиваем массив изображений случайным образом
+  tileImages = shuffleArray(tileImages)
 
   // Создаем массив объектов плиток с уникальными id
-  const tiles = tileColors.map((color, index) => ({
+  const tiles = tileImages.map((image, index) => ({
     id: index,
-    color,
+    image,
     flipped: false, // Изначально все плитки закрыты
     removed: false // по умолчанию плитка не удалена
   }))
