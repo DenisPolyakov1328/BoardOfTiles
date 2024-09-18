@@ -17,25 +17,25 @@ const Board = () => {
 
   // Генерация плиток при загрузке компонента
   useEffect(() => {
-    const newTiles = generateRandomTiles() // Логика для генерации плиток
+    const newTiles = generateRandomTiles()
     dispatch(generateTiles(newTiles))
   }, [dispatch])
 
   // Проверка плиток, когда выбраны две
   useEffect(() => {
     if (firstTile !== null && secondTile !== null) {
-      // Добавляем задержку перед проверкой
       const timer = setTimeout(() => {
         dispatch(checkTiles())
       }, 1000)
 
-      return () => clearTimeout(timer) // Очищаем таймер, если компонент размонтируется
+      return () => clearTimeout(timer)
     }
   }, [firstTile, secondTile, dispatch])
 
+  // Перезапуск игры
   const handleReset = () => {
-    const newTiles = generateRandomTiles()
     dispatch(resetGame())
+    const newTiles = generateRandomTiles()
     dispatch(generateTiles(newTiles))
   }
 

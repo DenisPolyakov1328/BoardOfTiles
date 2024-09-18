@@ -14,7 +14,6 @@ const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    // Генерация плиток
     generateTiles(state, action) {
       state.tiles = action.payload
       state.matchedTiles = 0
@@ -28,69 +27,54 @@ const gameSlice = createSlice({
     flipTile(state, action) {
       const tileIndex = action.payload
 
-      // Если плитка уже перевернута, не позволяем ее повторно выбрать
-      if (state.tiles[tileIndex].flipped) {
+      if (state.tiles[tileIndex].flipped || state.isChecking) {
         return
       }
 
-      // Если еще не выбрана первая плитка
       if (state.firstTile === null) {
         state.firstTile = tileIndex
         state.tiles[tileIndex].flipped = true
       } else if (state.secondTile === null) {
-        // Если первая плитка уже выбрана, устанавливаем вторую плитку
         state.secondTile = tileIndex
         state.tiles[tileIndex].flipped = true
-
-        // Начинаем процесс проверки плиток (блокируем клики)
         state.isChecking = true
+        state.moves += 1 // Увеличиваем количество ходов
       }
     },
 
     checkTiles(state) {
-      if (state.firstTile !== null && state.secondTile !== null) {
-        const firstTileIndex = state.firstTile
-        const secondTileIndex = state.secondTile
-        const firstTile = state.tiles[firstTileIndex]
-        const secondTile = state.tiles[secondTileIndex]
+      const { firstTile, secondTile } = state
 
-        if (firstTile.image === secondTile.image) {
-          // Если плитки совпали, они должны исчезнуть
+      if (firstTile !== null && secondTile !== null) {
+        const firstTileIndex = firstTile
+        const secondTileIndex = secondTile
+        const firstTileData = state.tiles[firstTileIndex]
+        const secondTileData = state.tiles[secondTileIndex]
+
+        if (firstTileData.image === secondTileData.image) {
           state.tiles[firstTileIndex].removed = true
           state.tiles[secondTileIndex].removed = true
-          // Если плитки совпали, они остаются открытыми
           state.matchedTiles += 2
 
-          // Проверка завершения игры
           if (state.matchedTiles === state.tiles.length) {
             state.gameOver = true
           }
         } else {
-          // Если плитки не совпали, закрываем их
-          state.tiles = state.tiles.map((tile, index) => {
-            if (index === firstTileIndex || index === secondTileIndex) {
-              return { ...tile, flipped: false }
-            }
-            return tile
-          })
+          state.tiles = state.tiles.map((tile, index) =>
+            index === firstTileIndex || index === secondTileIndex
+              ? { ...tile, flipped: false }
+              : tile
+          )
         }
 
-        // Сбрасываем выбранные плитки
         state.firstTile = null
         state.secondTile = null
-        state.isChecking = false // Разблокируем клики
+        state.isChecking = false
       }
     },
 
-    // Перезапуск игры
     resetGame(state) {
-      state.tiles = []
-      state.firstTile = null
-      state.secondTile = null
-      state.moves = 0
-      state.matchedTiles = 0
-      state.gameOver = false
-      state.isChecking = false
+      Object.assign(state, initialState) // Сброс состояния к начальному
     }
   }
 })
